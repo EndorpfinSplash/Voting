@@ -4,12 +4,16 @@ import com.itacademy.domain.User;
 import com.itacademy.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -35,22 +39,57 @@ public class UserDaoImpl implements UserDao {
 
     public List<User> findAll() {
         final String getAllUserQuery = "select * from user";
-         return namedParameterJdbcTemplate.query(getAllUserQuery, this::getRowToUser);
+        return namedParameterJdbcTemplate.query(getAllUserQuery, this::getRowToUser);
     }
 
     public User findById(Long id) {
-        return null;
+        final String getUserByIDQuery = "select * from user where user_id = ?";
+        return jdbcTemplate.queryForObject(getUserByIDQuery, new Object[]{id}, this::getRowToUser);
     }
 
     public void delete(Long id) {
+        final String deleteUserQuery = "select * from user where user_id = :userId";
 
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("userId", id);
+
+        namedParameterJdbcTemplate.update(deleteUserQuery, params);
     }
 
     public User save(User entity) {
-        return null;
+
+        final String saveUserQuery = "INSERT INTO user(user_name, user_surname, registration_date,login,password) " +
+                "VALUES (:userName, :userSurname, :registrationDate, :login, :passwd)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("userName", entity.getUserName());
+        params.addValue("userSurname", entity.getUserSurname());
+        params.addValue("logih", entity.getLogin());
+        params.addValue("passwd", entity.getPassword());
+        namedParameterJdbcTemplate.update(saveUserQuery, params, keyHolder);
+
+        long createdUserId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+
+        return findById(createdUserId);
     }
 
     public User update(User entity) {
-        return null;
+
+        final String updateUserQuery = "update user set user_name= :userName , user_surname = :userSurname, login = :login, password = :password" +
+                " where user_id = :userId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+
+        params.addValue("user_id", entity.getUserId());
+
+        params.addValue("userName", entity.getUserName());
+        params.addValue("userSurname", entity.getUserSurname());
+        params.addValue("login", entity.getLogin());
+        params.addValue("pass", entity.getPassword());
+
+        namedParameterJdbcTemplate.update(updateUserQuery,params);
+        return findById(entity.getUserId());
     }
 }
