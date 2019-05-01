@@ -1,5 +1,8 @@
 package com.itacademy.domain;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -11,20 +14,21 @@ public class User {
     private String login;
     private String password;
 
-    public User() {}
+    public User() {
+    }
 
     public User(Long userId, String userName, String userSurname) {
         this.userId = userId;
         this.userName = userName;
         this.userSurname = userSurname;
-        this.registrationDate =  new Timestamp(System.currentTimeMillis());
+        this.registrationDate = new Timestamp(System.currentTimeMillis());
     }
 
 
     public User(Long userId, String userName, String userSurname, String login, String password) {
-        this(userId,userName,userSurname);
+        this(userId, userName, userSurname);
         this.login = login;
-        this.password =  password;
+        this.password = password;
     }
 
     public Long getUserId() {
@@ -94,5 +98,10 @@ public class User {
         return Objects.hash(userId, userName, userSurname, registrationDate, login, password);
     }
 
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+    }
 
 }

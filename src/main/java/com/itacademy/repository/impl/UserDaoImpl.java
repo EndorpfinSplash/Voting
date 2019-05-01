@@ -37,16 +37,19 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+    @Override
     public List<User> findAll() {
         final String getAllUserQuery = "select * from user";
         return namedParameterJdbcTemplate.query(getAllUserQuery, this::getRowToUser);
     }
 
+    @Override
     public User findById(Long id) {
         final String getUserByIDQuery = "select * from user where user_id = ?";
         return jdbcTemplate.queryForObject(getUserByIDQuery, new Object[]{id}, this::getRowToUser);
     }
 
+    @Override
     public void delete(Long id) {
         final String deleteUserQuery = "select * from user where user_id = :userId";
 
@@ -56,6 +59,7 @@ public class UserDaoImpl implements UserDao {
         namedParameterJdbcTemplate.update(deleteUserQuery, params);
     }
 
+    @Override
     public User save(User entity) {
 
         final String saveUserQuery = "INSERT INTO user(user_name, user_surname, registration_date,login,password) " +
@@ -66,6 +70,7 @@ public class UserDaoImpl implements UserDao {
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("userName", entity.getUserName());
         params.addValue("userSurname", entity.getUserSurname());
+        params.addValue("registrationDate", entity.getRegistrationDate());
         params.addValue("logih", entity.getLogin());
         params.addValue("passwd", entity.getPassword());
         namedParameterJdbcTemplate.update(saveUserQuery, params, keyHolder);
@@ -75,21 +80,25 @@ public class UserDaoImpl implements UserDao {
         return findById(createdUserId);
     }
 
+    @Override
     public User update(User entity) {
 
-        final String updateUserQuery = "update user set user_name= :userName , user_surname = :userSurname, login = :login, password = :password" +
-                " where user_id = :userId";
+        final String updateUserQuery =
+                "update users set user_name= :userName , user_surname = :userSurname, registration_date = :registrationDate, login = :login, password = :password" +
+                        " where user_id = :userId";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
 
         params.addValue("user_id", entity.getUserId());
-
         params.addValue("userName", entity.getUserName());
         params.addValue("userSurname", entity.getUserSurname());
+        params.addValue("registrationDate", entity.getRegistrationDate());
         params.addValue("login", entity.getLogin());
         params.addValue("pass", entity.getPassword());
 
-        namedParameterJdbcTemplate.update(updateUserQuery,params);
+        namedParameterJdbcTemplate.update(updateUserQuery, params);
         return findById(entity.getUserId());
     }
+
+
 }
