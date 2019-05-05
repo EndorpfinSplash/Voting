@@ -1,5 +1,6 @@
 package com.itacademy.repository.impl;
 
+import com.itacademy.domain.Role;
 import com.itacademy.domain.User;
 import com.itacademy.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class UserDaoImpl implements UserDao {
         user.setRegistrationDate(rowSet.getTimestamp(REGISTRATION_DATE));
         return user;
     }
+
+    @Autowired
+    RoleDaoImpl roleDaoImpl;
 
     @Override
     public List<User> findAll() {
@@ -101,4 +105,41 @@ public class UserDaoImpl implements UserDao {
     }
 
 
+    @Override
+    public Role setUserRole(User user, Role role) {
+        final String saveUserQuery = "INSERT INTO users_roles(user_id, role_id) " +
+                "VALUES (:userId, :roleId)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("userId", user.getUserId());
+        params.addValue("roleId", role.getRoleId());
+        namedParameterJdbcTemplate.update(saveUserQuery, params, keyHolder);
+
+        long createdRoleId = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        return roleDaoImpl.findById(createdRoleId);
+    }
+
+    @Override
+    public List<Role> getUserRoles(User user) {
+        final String getUsersRolesQuery = "SELECT * from users_roles ur left join roles r on r.role_id = ur.role_id" +
+                " where user_id = :userId";
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("userId", user.getUserId());
+
+
+        return  namedParameterJdbcTemplate.query(getUsersRolesQuery, params, roleDaoImpl::getRoleFromRow);
+    }
+
+    @Override
+    public Role updateUserRoles(User user, Role role) {
+        return null;
+    }
+
+    @Override
+    public void deleteUserRole(User user, Role role) {
+
+    }
 }

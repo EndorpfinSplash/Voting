@@ -27,7 +27,7 @@ public class RoleDaoImpl implements RoleDao {
     public static final String ROLE_ID = "role_id";
     public static final String ROLE_NAME = "role_name";
 
-    private Role getRoleFromRow(ResultSet resultSet, int i) throws SQLException {
+    public Role getRoleFromRow(ResultSet resultSet, int i) throws SQLException {
         Role role = new Role();
         role.setRoleId(resultSet.getLong(ROLE_ID));
         role.setRoleName(resultSet.getString(ROLE_NAME));
