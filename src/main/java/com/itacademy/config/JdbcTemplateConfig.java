@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 
 @Configuration
@@ -21,8 +22,13 @@ public class JdbcTemplateConfig {
         return new JdbcTemplate(dataSource);
     }
 
-    @Bean
+    @Bean (value = "namedParameterJdbcTemplate")
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
         return new NamedParameterJdbcTemplate(dataSource);
+    }
+
+    @Bean("txManager")
+    public DataSourceTransactionManager getTransactionManager() {
+        return new DataSourceTransactionManager(dataSource);
     }
 }
