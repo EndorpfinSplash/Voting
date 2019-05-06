@@ -42,13 +42,13 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Role findById(Long id) {
-        final String findById = "select * from voting.roles where role_id = ?";
+        final String findById = "select * from roles where role_id = ?";
         return jdbcTemplate.queryForObject(findById, new Object[]{id}, this::getRoleFromRow);
     }
 
     @Override
     public void delete(Long id) {
-        String deleteRole = "Delete from voting.roles where role_id=:id";
+        String deleteRole = "Delete from roles where role_id=:id";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("roleId", id);
         namedParameterJdbcTemplate.update(deleteRole, params);

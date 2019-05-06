@@ -2,17 +2,23 @@ package com.itacademy.repository.impl;
 
 import com.itacademy.domain.Role;
 import com.itacademy.domain.User;
+import com.itacademy.domain.VariantAnswer;
+import com.itacademy.repository.RoleDao;
 import com.itacademy.repository.UserDao;
+import com.itacademy.repository.VariantsAnswerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +45,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Autowired
-    RoleDaoImpl roleDaoImpl;
+    RoleDao roleDao;
 
     @Override
     public List<User> findAll() {
@@ -118,28 +124,56 @@ public class UserDaoImpl implements UserDao {
         namedParameterJdbcTemplate.update(saveUserQuery, params, keyHolder);
 
         long createdRoleId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        return roleDaoImpl.findById(createdRoleId);
+        return roleDao.findById(createdRoleId);
     }
 
     @Override
     public List<Role> getUserRoles(User user) {
-        final String getUsersRolesQuery = "SELECT * from users_roles ur left join roles r on r.role_id = ur.role_id" +
+        final String getUsersRolesQuery = "SELECT * from voting.users_roles ur left join voting.roles r on r.role_id = ur.role_id" +
                 " where user_id = :userId";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("userId", user.getUserId());
 
-
-        return  namedParameterJdbcTemplate.query(getUsersRolesQuery, params, roleDaoImpl::getRoleFromRow);
-    }
-
-    @Override
-    public Role updateUserRoles(User user, Role role) {
-        return null;
+        return namedParameterJdbcTemplate.query(getUsersRolesQuery, params, roleDao::getRoleFromRow);
     }
 
     @Override
     public void deleteUserRole(User user, Role role) {
+        final String deleteUserRole = "DELETE from users_roles where role_id = :roleId";
+        MapSqlParameterSource param = new MapSqlParameterSource();
+        param.addValue("roleId", role.getRoleId());
+        namedParameterJdbcTemplate.update(deleteUserRole, param);
+    }
+
+
+    @Autowired
+    VariantsAnswerDao variantAnswerDao;
+
+    @Override
+    public void setUserVariantAnswer(User user, VariantAnswer variantAnswer) {
+
+        final String saveUserVariantAnswer = "INSERT INTO voting.users_answers(answer_date, user_id, answer_id) " +
+                "VALUES (:answerDate, :userId, :variantAnswerId)";
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("answerDate", LocalDateTime.now());
+        params.addValue("userId", user.getUserId());
+        params.addValue("variantAnswerId", variantAnswer.getAnswerId());
+        namedParameterJdbcTemplate.update(saveUserVariantAnswer, params);
+    }
+
+    @Override
+    public List<VariantAnswer> getUserVariantsAnswer(User user) {
+        final String getUserVariantAnswer = "select * from voting.users_answers join voting.variant_answers on users_answers.answer_id = variant_answers.answer_id" +
+                " where user_id = :userId";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("userId", user.getUserId());
+        return namedParameterJdbcTemplate.query(getUserVariantAnswer,params, variantAnswerDao::getAnswerFromRow);
+    }
+
+    @Override
+    public void deleteVariantAnswer(User user, VariantAnswer variantAnswer) {
 
     }
 }
