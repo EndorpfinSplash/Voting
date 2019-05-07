@@ -51,19 +51,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll() {
-        final String getAllUserQuery = "select * from user";
+        final String getAllUserQuery = "select * from voting.users";
         return namedParameterJdbcTemplate.query(getAllUserQuery, this::getRowToUser);
     }
 
     @Override
     public User findById(Long id) {
-        final String getUserByIDQuery = "select * from user where user_id = ?";
+        final String getUserByIDQuery = "select * from voting.users where user_id = ?";
         return jdbcTemplate.queryForObject(getUserByIDQuery, new Object[]{id}, this::getRowToUser);
     }
 
     @Override
     public void delete(Long id) {
-        final String deleteUserQuery = "select * from user where user_id = :userId";
+        final String deleteUserQuery = "select * from voting.users where user_id = :userId";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("userId", id);
@@ -74,7 +74,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User save(User entity) {
 
-        final String saveUserQuery = "INSERT INTO user(user_name, user_surname, registration_date,login,password) " +
+        final String saveUserQuery = "INSERT INTO voting.users(user_name, user_surname, registration_date,login,password) " +
                 "VALUES (:userName, :userSurname, :registrationDate, :login, :passwd)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -96,7 +96,7 @@ public class UserDaoImpl implements UserDao {
     public User update(User entity) {
 
         final String updateUserQuery =
-                "update users set user_name= :userName , user_surname = :userSurname, registration_date = :registrationDate, login = :login, password = :password" +
+                "update voting.users set user_name= :userName , user_surname = :userSurname, registration_date = :registrationDate, login = :login, password = :password" +
                         " where user_id = :userId";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
@@ -181,7 +181,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByLogin(String login) {
-        final String findByLogin = "select * from user where login = :login";
+        final String findByLogin = "select * from voting.users where login = :login";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("login", login);
