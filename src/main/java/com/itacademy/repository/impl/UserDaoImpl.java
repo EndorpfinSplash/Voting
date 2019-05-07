@@ -7,6 +7,7 @@ import com.itacademy.repository.RoleDao;
 import com.itacademy.repository.UserDao;
 import com.itacademy.repository.VariantsAnswerDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
+@Qualifier("userDaoImpl")
 public class UserDaoImpl implements UserDao {
 
     @Autowired
@@ -175,5 +177,15 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void deleteVariantAnswer(User user, VariantAnswer variantAnswer) {
 
+    }
+
+    @Override
+    public User findByLogin(String login) {
+        final String findByLogin = "select * from user where login = :login";
+
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("login", login);
+
+        return namedParameterJdbcTemplate.queryForObject(findByLogin, params, this::getRowToUser);
     }
 }

@@ -3,30 +3,45 @@ package com.itacademy.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
+
+import java.util.Objects;
 
 @Configuration
 @PropertySource("classpath:database.properties")
 public class DatabaseConfig {
 
-    @Autowired
-    Environment environment;
+    @Value("${driverName}")
+    private String driverClassName;
+
+    @Value("${password}")
+    private String password;
+
+    @Value("${url}")
+    private String url;
+
+    @Value("${initialSize}")
+    private String initialSize;
+
+    @Value("${login}")
+    private String username;
+
+    @Value("${maxActive}")
+    private String maxActive;
 
     @Bean(value = "dataSource", destroyMethod = "close")
     @Scope("singleton")
-    public BasicDataSource getDataSource() {
+    @Primary
+    public BasicDataSource getDatasource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(environment.getProperty("driverName"));
-        dataSource.setUrl(environment.getProperty("url"));
-        dataSource.setUsername(environment.getProperty("login"));
-        dataSource.setPassword(environment.getProperty("password"));
-        dataSource.setInitialSize(Integer.parseInt(environment.getProperty("initialSize")));
-        dataSource.setMaxActive(Integer.parseInt(environment.getProperty("maxActive")));
+        dataSource.setDriverClassName(driverClassName);
+        dataSource.setPassword(password);
+        dataSource.setUrl(url);
+        dataSource.setInitialSize(Integer.valueOf(Objects.requireNonNull(initialSize)));
+        dataSource.setUsername(username);
+        dataSource.setMaxActive(Integer.valueOf(Objects.requireNonNull(maxActive)));
         return dataSource;
     }
-
 }

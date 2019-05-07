@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface UserDao extends GenericDao<User, Long> {
 
+     User findByLogin(String login);
+
      /* ~~~ Roles DAO ~~~*/
 
      Role setUserRole(User user, Role role);

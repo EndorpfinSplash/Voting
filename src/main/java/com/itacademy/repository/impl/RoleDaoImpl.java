@@ -3,6 +3,7 @@ package com.itacademy.repository.impl;
 import com.itacademy.domain.Role;
 import com.itacademy.repository.RoleDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
+@Qualifier("roleDaoImpl")
 public class RoleDaoImpl implements RoleDao {
 
     @Autowired
