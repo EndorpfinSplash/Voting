@@ -5,13 +5,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
 
-public class Role {
+public class RoleCreateRequest {
     private String roleName;
 
-    public Role() {
+    public RoleCreateRequest() {
     }
 
-    public Role(String roleName) {
+    public RoleCreateRequest(String roleName) {
         this.roleName = roleName;
     }
 
@@ -27,7 +27,7 @@ public class Role {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Role role = (Role) o;
+        RoleCreateRequest role = (RoleCreateRequest) o;
         return  Objects.equals(roleName, role.roleName);
     }
 

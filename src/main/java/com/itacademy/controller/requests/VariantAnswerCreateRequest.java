@@ -5,16 +5,16 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
 
-public class VariantAnswer {
+public class VariantAnswerCreateRequest {
     String variantAnswer;
     Long answerOrder;
     Long pollId;
     Boolean correctness;
 
-    public VariantAnswer() {
+    public VariantAnswerCreateRequest() {
     }
 
-    public VariantAnswer(String variantAnswer, Long answerOrder, Long pollId, Boolean correctness) {
+    public VariantAnswerCreateRequest(String variantAnswer, Long answerOrder, Long pollId, Boolean correctness) {
         this.variantAnswer = variantAnswer;
         this.answerOrder = answerOrder;
         this.pollId = pollId;
@@ -57,7 +57,7 @@ public class VariantAnswer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VariantAnswer that = (VariantAnswer) o;
+        VariantAnswerCreateRequest that = (VariantAnswerCreateRequest) o;
         return Objects.equals(variantAnswer, that.variantAnswer) &&
                 Objects.equals(answerOrder, that.answerOrder) &&
                 Objects.equals(pollId, that.pollId) &&

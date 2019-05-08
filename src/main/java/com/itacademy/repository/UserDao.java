@@ -12,19 +12,19 @@ public interface UserDao extends GenericDao<User, Long> {
 
      /* ~~~ Roles DAO ~~~*/
 
-     Role setUserRole(User user, Role role);
+     Role setUserRole(Long userId, Long roleId);
 
-     List<Role> getUserRoles(User user);
+     List<Role> getUserRoles(Long userId);
 
-     void deleteUserRole (User user, Role role);
+     void deleteUserRole (Long userId, Long roleId);
 
      /* ~~~ Answers DAO ~~~*/
 
-     void setUserVariantAnswer(User user, VariantAnswer variantAnswer);
+     void setUserVariantAnswer(Long userId, Long answerId);
 
-     List<VariantAnswer> getUserVariantsAnswer(User user);
+     List<VariantAnswer> getUserVariantsAnswer(Long id);
 
-     void deleteVariantAnswer (User user, VariantAnswer variantAnswer);
+     void deleteVariantAnswer (Long userId, Long answerId);
 
      // update = delete + set
 

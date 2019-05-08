@@ -2,8 +2,9 @@ package com.itacademy.repository.impl;
 
 import com.itacademy.domain.Poll;
 import com.itacademy.domain.VariantAnswer;
-import com.itacademy.repository.VariantsAnswerDao;
+import com.itacademy.repository.VariantAnswerDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -17,7 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class VariantAnswerDaoImpl implements VariantsAnswerDao {
+@Qualifier("variantAnswerDaoImpl")
+public class VariantAnswerDaoImpl implements VariantAnswerDao {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -26,7 +28,7 @@ public class VariantAnswerDaoImpl implements VariantsAnswerDao {
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public static final String ANSWER_ID = "answer_id";
-    public static final String ANSWER = "answer";
+    public static final String VARIANT_ANSWER = "variant_answer";
     public static final String ANSWER_ORDER = "answer_order";
     public static final String CORRECTNESS = "сorrectness";
     public static final String POLL_ID = "poll_id";
@@ -34,7 +36,7 @@ public class VariantAnswerDaoImpl implements VariantsAnswerDao {
     public VariantAnswer getAnswerFromRow(ResultSet resultSet, int i) throws SQLException {
         VariantAnswer variantAnswer = new VariantAnswer();
         variantAnswer.setAnswerId(resultSet.getLong(ANSWER_ID));
-        variantAnswer.setVariantAnswer(resultSet.getString(ANSWER));
+        variantAnswer.setVariantAnswer(resultSet.getString(VARIANT_ANSWER));
         variantAnswer.setAnswerOrder(resultSet.getLong(ANSWER_ORDER));
         variantAnswer.setCorrectness(resultSet.getBoolean(CORRECTNESS));
         variantAnswer.setPollId(resultSet.getLong(POLL_ID));
@@ -98,6 +100,14 @@ public class VariantAnswerDaoImpl implements VariantsAnswerDao {
         final String getAnswersForPoll = "select * from voting.variant_answers where poll_id = :pollId";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("pollId", poll.getPollId());
+        return namedParameterJdbcTemplate.query(getAnswersForPoll, params, this::getAnswerFromRow);
+    }
+
+    @Override
+    public List<VariantAnswer> findVariantAnswersForPull(Long poll_id) {
+        final String getAnswersForPoll = "select * from voting.variant_answers where poll_id = :pollId";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("pollId", poll_id);
         return namedParameterJdbcTemplate.query(getAnswersForPoll, params, this::getAnswerFromRow);
     }
 }

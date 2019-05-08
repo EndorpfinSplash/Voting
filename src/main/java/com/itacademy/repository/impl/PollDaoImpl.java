@@ -3,8 +3,9 @@ package com.itacademy.repository.impl;
 import com.itacademy.domain.Poll;
 import com.itacademy.domain.VariantAnswer;
 import com.itacademy.repository.PollDao;
-import com.itacademy.repository.VariantsAnswerDao;
+import com.itacademy.repository.VariantAnswerDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
+@Qualifier("pollDaoImpl")
 public class PollDaoImpl implements PollDao {
 
     @Autowired
@@ -32,13 +34,13 @@ public class PollDaoImpl implements PollDao {
     public Poll getPollFromRow(ResultSet resultSet, int i) throws SQLException {
         Poll poll = new Poll();
         poll.setPollId(resultSet.getLong(POLL_ID));
-        poll.setPollQuestion(POLL_QUESTION);
+        poll.setPollQuestion(resultSet.getString(POLL_QUESTION));
         return poll;
     }
 
     @Override
     public List<Poll> findAll() {
-        final String getAllPolls = "select * from poll";
+        final String getAllPolls = "select * from voting.poll";
         return jdbcTemplate.query(getAllPolls, this::getPollFromRow);
     }
 
@@ -50,9 +52,9 @@ public class PollDaoImpl implements PollDao {
 
     @Override
     public void delete(Long id) {
-        String deletePoll = "Delete from poll where poll_id =:id";
+        String deletePoll = "Delete from voting.poll where poll_id =:poolId";
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("roleId", id);
+        params.addValue("poolId", id);
         namedParameterJdbcTemplate.update(deletePoll, params);
     }
 
@@ -73,7 +75,7 @@ public class PollDaoImpl implements PollDao {
 
     @Override
     public Poll update(Poll entity) {
-        String updatePoll = "update voting.poll set poll_question =:pollQuestion where poll_id = :pollId)";
+        String updatePoll = "update voting.poll set poll_question =:pollQuestion where poll_id = :pollId";
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("pollQuestion", entity.getPollQuestion());
@@ -85,11 +87,11 @@ public class PollDaoImpl implements PollDao {
 
 
     @Autowired
-    VariantsAnswerDao variantsAnswerDao;
+    VariantAnswerDao variantAnswerDao;
 
     @Override
     public List<VariantAnswer> getAnswersForPoll(Poll poll) {
-        return variantsAnswerDao.findVariantAnswersForPull(poll);
+        return variantAnswerDao.findVariantAnswersForPull(poll);
     }
 
 }

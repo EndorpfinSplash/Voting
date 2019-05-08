@@ -5,13 +5,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Objects;
 
-public class Poll {
+public class PollCreateRequest {
     private String pollQuestion;
 
-    public Poll() {
+    public PollCreateRequest() {
     }
 
-    public Poll(String pollQuestion) {
+    public PollCreateRequest(String pollQuestion) {
         this.pollQuestion = pollQuestion;
     }
 
@@ -28,7 +28,7 @@ public class Poll {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Poll poll = (Poll) o;
+        PollCreateRequest poll = (PollCreateRequest) o;
         return  Objects.equals(pollQuestion, poll.pollQuestion);
     }
 

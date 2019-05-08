@@ -7,9 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface VariantsAnswerDao extends GenericDao<VariantAnswer, Long> {
+public interface VariantAnswerDao extends GenericDao<VariantAnswer, Long> {
 
     List<VariantAnswer> findVariantAnswersForPull(Poll poll);
+    List<VariantAnswer> findVariantAnswersForPull(Long poll_id);
 
     VariantAnswer getAnswerFromRow(ResultSet resultSet, int i) throws SQLException;
 
