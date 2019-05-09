@@ -30,6 +30,7 @@ public class UserDaoImpl implements UserDao {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
     public static final String USER_ID = "user_id";
     public static final String USER_NAME = "user_name";
     public static final String USER_SURNAME = "user_surname";
@@ -45,6 +46,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Autowired
+    @Qualifier("roleDaoImpl")
     RoleDao roleDao;
 
     @Override
@@ -149,6 +151,7 @@ public class UserDaoImpl implements UserDao {
 
 
     @Autowired
+    @Qualifier("variantAnswerDaoImpl")
     VariantAnswerDao variantAnswerDao;
 
     @Override
@@ -171,7 +174,7 @@ public class UserDaoImpl implements UserDao {
                 " where user_id = :userId";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("userId", id);
-        return namedParameterJdbcTemplate.query(getUserVariantAnswer,params, variantAnswerDao::getAnswerFromRow);
+        return namedParameterJdbcTemplate.query(getUserVariantAnswer, params, variantAnswerDao::getAnswerFromRow);
     }
 
     @Override

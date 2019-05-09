@@ -12,6 +12,7 @@ public interface VariantAnswerDao extends GenericDao<VariantAnswer, Long> {
     List<VariantAnswer> findVariantAnswersForPull(Poll poll);
     List<VariantAnswer> findVariantAnswersForPull(Long poll_id);
 
-    VariantAnswer getAnswerFromRow(ResultSet resultSet, int i) throws SQLException;
-
+    default VariantAnswer getAnswerFromRow(ResultSet resultSet, int i) throws SQLException {
+        return null;
+    }
 }

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 public interface RoleDao extends GenericDao<Role, Long> {
 
-    Role getRoleFromRow(ResultSet resultSet, int i) throws SQLException;
+    default Role getRoleFromRow(ResultSet resultSet, int i) throws SQLException {
+        return null;
+    }
 
 }

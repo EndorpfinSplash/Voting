@@ -87,6 +87,7 @@ public class PollDaoImpl implements PollDao {
 
 
     @Autowired
+    @Qualifier("variantAnswerDaoImpl")
     VariantAnswerDao variantAnswerDao;
 
     @Override
