@@ -3,11 +3,22 @@ package com.itacademy.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+
+@Entity
+@Table(name = "voting.poll")
 public class Poll {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "poll_id")
     private Long pollId;
+
+    @Column(name = "poll_question")
     private String pollQuestion;
+
 
     public Poll() {
     }

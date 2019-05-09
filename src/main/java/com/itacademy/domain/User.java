@@ -3,15 +3,28 @@ package com.itacademy.domain;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+@Entity
+@Table(name = "voting.users")
 public class User {
+    @Id
+    @Column(name = "user_id")
     private Long userId;
+    @Column(name = "user_name")
     private String userName;
+    @Column(name = "user_surname")
     private String userSurname;
+    @Column(name = "registration_date")
     private Timestamp registrationDate;
+    @Column(name = "login")
     private String login;
+    @Column(name = "password")
     private String password;
 
     public User() {

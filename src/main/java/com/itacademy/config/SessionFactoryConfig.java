@@ -22,7 +22,7 @@ public class SessionFactoryConfig {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 
         // Package contain entity classes
-        factoryBean.setPackagesToScan("com.htp");
+        factoryBean.setPackagesToScan("com.itacademy");
         factoryBean.setDataSource(dataSource);
         factoryBean.setHibernateProperties(properties);
         factoryBean.afterPropertiesSet();
