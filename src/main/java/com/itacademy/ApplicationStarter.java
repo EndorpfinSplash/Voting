@@ -21,7 +21,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         JdbcTemplateConfig.class,
         SwaggerConfig.class
 })
-public class ApplicationStarter extends SpringBootServletInitializer {
+public class ApplicationStarter
+ extends SpringBootServletInitializer
+ {
 
     public static void main(String[] args) {
         SpringApplication.run(ApplicationStarter.class, args);
