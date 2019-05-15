@@ -1,8 +1,8 @@
 package com.itacademy.repository.impl.hibernateImpl;
 
-import com.itacademy.domain.Poll;
-import com.itacademy.domain.VariantAnswer;
-import com.itacademy.repository.VariantAnswerDao;
+import com.itacademy.domain.hibernateDomain.Poll;
+import com.itacademy.domain.hibernateDomain.VariantAnswer;
+import com.itacademy.repository.VariantAnswerHibernateDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Repository
 @Qualifier("variantAnswerDaoHibernateImpl")
-public class VariantAnswerDaoHibernateImpl implements VariantAnswerDao {
+public class VariantAnswerDaoHibernateImpl implements VariantAnswerHibernateDao {
 
     @Autowired
     @Qualifier("sessionFactory")

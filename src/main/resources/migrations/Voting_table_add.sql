@@ -44,10 +44,10 @@ create index user_id_fk
 
 create table variant_answers
 (
-  answer_id      int                      not null primary key,
+  answer_id      int  auto_increment  not null primary key,
   variant_answer varchar(900)             null,
   answer_order   int                      null,
-  сorrectness    binary(1) default '0x30' null,
+  сorrectness    binary(1)  null,
   poll_id        int                      null,
   constraint poll__fk foreign key (poll_id) references poll (poll_id)
 );

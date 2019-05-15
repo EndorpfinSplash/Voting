@@ -1,4 +1,4 @@
-package com.itacademy.repository.impl;
+package com.itacademy.repository.impl.jdbcImpl;
 
 import com.itacademy.domain.Role;
 import com.itacademy.domain.User;

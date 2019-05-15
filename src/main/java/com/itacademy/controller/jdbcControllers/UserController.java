@@ -1,4 +1,4 @@
-package com.itacademy.controller;
+package com.itacademy.controller.jdbcControllers;
 
 import com.itacademy.controller.requests.UserCreateRequest;
 import com.itacademy.domain.Role;
