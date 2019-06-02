@@ -127,8 +127,8 @@ public class PollController {
         VariantAnswer variantAnswer = new VariantAnswer();
         variantAnswer.setPollId(pollId);
         variantAnswer.setVariantAnswer(request.getVariantAnswer());
-        variantAnswer.setAnswerOrder(request.getAnswerOrder());
         variantAnswer.setCorrectness(request.getCorrectness());
+        variantAnswer.setAnswerOrder(request.getAnswerOrder());
 
         VariantAnswer savedVariantAnswer = variantAnswerDao.save(variantAnswer);
         return new ResponseEntity<>(savedVariantAnswer, HttpStatus.CREATED);
@@ -144,8 +144,8 @@ public class PollController {
     ) {
         VariantAnswer variantAnswer = variantAnswerDao.findById(answerId);
         variantAnswer.setVariantAnswer(request.getVariantAnswer());
-        variantAnswer.setAnswerOrder(request.getAnswerOrder());
         variantAnswer.setCorrectness(request.getCorrectness());
+        variantAnswer.setAnswerOrder(request.getAnswerOrder());
 
         VariantAnswer savedVariantAnswer = variantAnswerDao.save(variantAnswer);
         return new ResponseEntity<>(savedVariantAnswer, HttpStatus.CREATED);
