@@ -1,4 +1,4 @@
-package com.itacademy.domain.hibernateDomain;
+package com.itacademy.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -8,10 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "voting.roles")
 public class Role {
 
     @Id
@@ -21,14 +20,10 @@ public class Role {
     @Column(name = "role_name")
     private String roleName;
 
-//    @JsonBackReference
-//    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-//    private Set<User> users = Collections.emptySet();
-
     public Role() {
     }
 
-    public Role(Long roleId, String roleName, Set<User> users) {
+    public Role(Long roleId, String roleName) {
         this.roleId = roleId;
         this.roleName = roleName;
     }
@@ -49,8 +44,6 @@ public class Role {
         this.roleName = roleName;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,11 +55,12 @@ public class Role {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(roleId, roleName);
     }
 
     @Override
     public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+        return ToStringBuilder.reflectionToString(this,ToStringStyle.JSON_STYLE);
     }
 }

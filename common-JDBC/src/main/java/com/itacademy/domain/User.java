@@ -1,16 +1,17 @@
-package com.itacademy.domain.hibernateDomain;
+package com.itacademy.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "voting.users")
 public class User {
     @Id
     @Column(name = "user_id")
@@ -26,32 +27,21 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = Collections.emptySet();
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_answers",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "answer_id")
-    )
-    private Set<VariantAnswer> variantAnswers = Collections.emptySet();
-
     public User() {
     }
 
-    public User(Long userId, String userName, String userSurname, Timestamp registrationDate, String login, String password, Set<Role> roles, Set<VariantAnswer> variantAnswers) {
+    public User(Long userId, String userName, String userSurname) {
         this.userId = userId;
         this.userName = userName;
         this.userSurname = userSurname;
-        this.registrationDate = registrationDate;
+        this.registrationDate = new Timestamp(System.currentTimeMillis());
+    }
+
+
+    public User(Long userId, String userName, String userSurname, String login, String password) {
+        this(userId, userName, userSurname);
         this.login = login;
         this.password = password;
-        this.roles = roles;
-        this.variantAnswers = variantAnswers;
     }
 
     public Long getUserId() {
@@ -102,22 +92,6 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public Set<VariantAnswer> getVariantAnswers() {
-        return variantAnswers;
-    }
-
-    public void setVariantAnswers(Set<VariantAnswer> variantAnswers) {
-        this.variantAnswers = variantAnswers;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -136,6 +110,7 @@ public class User {
 
         return Objects.hash(userId, userName, userSurname, registrationDate, login, password);
     }
+
 
     @Override
     public String toString() {

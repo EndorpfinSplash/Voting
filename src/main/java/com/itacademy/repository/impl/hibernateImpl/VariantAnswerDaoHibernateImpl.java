@@ -1,6 +1,5 @@
 package com.itacademy.repository.impl.hibernateImpl;
 
-import com.itacademy.domain.hibernateDomain.Poll;
 import com.itacademy.domain.hibernateDomain.VariantAnswer;
 import com.itacademy.repository.VariantAnswerHibernateDao;
 import org.hibernate.Session;
@@ -74,19 +73,4 @@ public class VariantAnswerDaoHibernateImpl implements VariantAnswerHibernateDao 
         return entity;
     }
 
-    @Override
-    public List<VariantAnswer> findVariantAnswersForPull(Poll poll) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("SELECT v FROM VariantAnswer v where v.pollId = :id", VariantAnswer.class)
-                    .setParameter("id", poll.getPollId())
-                    .list();
-        }
-    }
-
-    @Override
-    public List<VariantAnswer> findVariantAnswersForPull(Long poll_id) {
-        try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("SELECT v FROM VariantAnswer v where v.pollId = :id", VariantAnswer.class).list();
-        }
-    }
 }

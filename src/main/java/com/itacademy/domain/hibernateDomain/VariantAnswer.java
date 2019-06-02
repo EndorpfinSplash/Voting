@@ -1,20 +1,22 @@
 package com.itacademy.domain.hibernateDomain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "voting.variant_answers")
+@Table(name = "variant_answers")
 public class VariantAnswer {
     @Id
     @Column(name = "answer_id")
     Long answerId;
 
-    @Column(name = "")
+    @Column(name = "variant_answer")
     String variantAnswer;
 
     @Column(name = "answer_order")
@@ -23,22 +25,27 @@ public class VariantAnswer {
     @Column(name = "сorrectness")
     Boolean correctness;
 
-    @JsonIgnore
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "poll_id")
     Poll poll;
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "variantAnswers", fetch = FetchType.EAGER)
+    Set<User> users = Collections.emptySet();
 
 
     public VariantAnswer() {
     }
 
-    public VariantAnswer(Long answerId, String variantAnswer, Long answerOrder, Long pollId, Boolean correctness) {
+    public VariantAnswer(Long answerId, String variantAnswer, Long answerOrder, Boolean correctness, Poll poll, Set<User> users) {
         this.answerId = answerId;
         this.variantAnswer = variantAnswer;
         this.answerOrder = answerOrder;
         this.correctness = correctness;
+        this.poll = poll;
+        this.users = users;
     }
-
 
     public Long getAnswerId() {
         return answerId;
@@ -70,6 +77,22 @@ public class VariantAnswer {
 
     public void setCorrectness(Boolean correctness) {
         this.correctness = correctness;
+    }
+
+    public Poll getPoll() {
+        return poll;
+    }
+
+    public void setPoll(Poll poll) {
+        this.poll = poll;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     @Override

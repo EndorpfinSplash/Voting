@@ -1,9 +1,7 @@
 package com.itacademy.repository.impl.hibernateImpl;
 
 import com.itacademy.domain.hibernateDomain.Poll;
-import com.itacademy.domain.hibernateDomain.VariantAnswer;
 import com.itacademy.repository.PollHibernateDao;
-import com.itacademy.repository.VariantAnswerHibernateDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@Qualifier("PollDaoHibernateImpl")
+@Qualifier("pollDaoHibernateImpl")
 public class PollDaoHibernateImpl implements PollHibernateDao {
 
     @Autowired
@@ -77,16 +75,6 @@ public class PollDaoHibernateImpl implements PollHibernateDao {
             e.printStackTrace();
         }
         return entity;
-    }
-
-
-    @Autowired
-    @Qualifier("variantAnswerDaoHibernateImpl")
-    VariantAnswerHibernateDao variantAnswerDao;
-
-    @Override
-    public List<VariantAnswer> getAnswersForPoll(Poll poll) {
-        return variantAnswerDao.findVariantAnswersForPull(poll);
     }
 
 }

@@ -1,40 +1,20 @@
-package com.itacademy.domain;
+package com.itacademy.requests;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-
-@Entity
-@Table(name = "voting.poll")
-public class Poll {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "poll_id")
-    private Long pollId;
-
-    @Column(name = "poll_question")
+public class PollCreateRequest {
     private String pollQuestion;
 
-    public Poll() {
+    public PollCreateRequest() {
     }
 
-
-    public Poll(Long pollId, String pollQuestion) {
-        this.pollId = pollId;
+    public PollCreateRequest(String pollQuestion) {
         this.pollQuestion = pollQuestion;
     }
 
-    public Long getPollId() {
-        return pollId;
-    }
-
-    public void setPollId(Long pollId) {
-        this.pollId = pollId;
-    }
 
     public String getPollQuestion() {
         return pollQuestion;
@@ -48,15 +28,14 @@ public class Poll {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Poll poll = (Poll) o;
-        return Objects.equals(pollId, poll.pollId) &&
-                Objects.equals(pollQuestion, poll.pollQuestion);
+        PollCreateRequest poll = (PollCreateRequest) o;
+        return  Objects.equals(pollQuestion, poll.pollQuestion);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(pollId, pollQuestion);
+        return Objects.hash(pollQuestion);
     }
 
     @Override

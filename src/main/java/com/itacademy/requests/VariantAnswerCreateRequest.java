@@ -1,52 +1,24 @@
-package com.itacademy.domain;
+package com.itacademy.requests;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Objects;
 
-@Entity
-@Table(name = "voting.variant_answers")
-public class VariantAnswer {
-    @Id
-    @Column(name = "answer_id")
-    Long answerId;
-
-    @Column(name = "variant_answer")
+public class VariantAnswerCreateRequest {
     String variantAnswer;
-
-    @Column(name = "answer_order")
     Long answerOrder;
-
-    @Column(name = "сorrectness")
+    Long pollId;
     Boolean correctness;
 
-    @Column(name = "poll_id")
-    Long pollId;
-
-
-    public VariantAnswer() {
+    public VariantAnswerCreateRequest() {
     }
 
-    public VariantAnswer(Long answerId, String variantAnswer, Long answerOrder, Long pollId, Boolean correctness) {
-        this.answerId = answerId;
+    public VariantAnswerCreateRequest(String variantAnswer, Long answerOrder, Long pollId, Boolean correctness) {
         this.variantAnswer = variantAnswer;
         this.answerOrder = answerOrder;
-        this.correctness = correctness;
         this.pollId = pollId;
-    }
-
-
-    public Long getAnswerId() {
-        return answerId;
-    }
-
-    public void setAnswerId(Long answerId) {
-        this.answerId = answerId;
+        this.correctness = correctness;
     }
 
     public String getVariantAnswer() {
@@ -85,18 +57,17 @@ public class VariantAnswer {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        VariantAnswer that = (VariantAnswer) o;
-        return Objects.equals(answerId, that.answerId) &&
-                Objects.equals(variantAnswer, that.variantAnswer) &&
+        VariantAnswerCreateRequest that = (VariantAnswerCreateRequest) o;
+        return Objects.equals(variantAnswer, that.variantAnswer) &&
                 Objects.equals(answerOrder, that.answerOrder) &&
-                Objects.equals(correctness, that.correctness) &&
-                Objects.equals(pollId, that.pollId);
+                Objects.equals(pollId, that.pollId) &&
+                Objects.equals(correctness, that.correctness);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(answerId, variantAnswer, answerOrder, correctness, pollId);
+        return Objects.hash(variantAnswer, answerOrder, pollId, correctness);
     }
 
     @Override

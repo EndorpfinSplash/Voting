@@ -1,7 +1,7 @@
 package com.itacademy.repository.impl.hibernateImpl;
 
-import com.itacademy.domain.Role;
-import com.itacademy.repository.RoleDao;
+import com.itacademy.domain.hibernateDomain.Role;
+import com.itacademy.repository.RoleHibernateDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 @Qualifier("roleDaoHibernateImpl")
-public class RoleDaoHibernateImpl implements RoleDao {
+public class RoleDaoHibernateImpl implements RoleHibernateDao {
 
     @Autowired
     @Qualifier("sessionFactory")

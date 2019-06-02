@@ -10,7 +10,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "voting.poll")
+@Table(name = "poll")
 public class Poll {
 
     @Id
