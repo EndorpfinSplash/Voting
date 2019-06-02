@@ -1,5 +1,6 @@
 package com.itacademy.repository.impl;
 
+import com.itacademy.domain.Poll;
 import com.itacademy.domain.VariantAnswer;
 import com.itacademy.repository.VariantAnswerDao;
 import org.hibernate.Session;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -73,4 +75,12 @@ public class VariantAnswerDaoImpl implements VariantAnswerDao {
         return entity;
     }
 
+    @Override
+    public List<VariantAnswer> findVariantAnswersForPull(Long poll_id) {
+
+        try (Session session = sessionFactory.openSession()) {
+            Poll poll = session.createQuery("SELECT p FROM Poll p where p.pollId = :id", Poll.class).uniqueResult();
+            return new ArrayList<>(poll.getVariantAnswers());
+        }
+    }
 }

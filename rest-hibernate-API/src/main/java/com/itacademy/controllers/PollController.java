@@ -125,7 +125,7 @@ public class PollController {
                                                                     @PathVariable("id") Long pollId
     ) {
         VariantAnswer variantAnswer = new VariantAnswer();
-        variantAnswer.setPollId(pollId);
+        variantAnswer.setPoll(pollDao.findById(pollId));
         variantAnswer.setVariantAnswer(request.getVariantAnswer());
         variantAnswer.setAnswerOrder(request.getAnswerOrder());
         variantAnswer.setCorrectness(request.getCorrectness());

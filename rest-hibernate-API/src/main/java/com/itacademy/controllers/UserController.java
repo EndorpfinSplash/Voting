@@ -132,7 +132,9 @@ public class UserController {
     @GetMapping(value = "/{user_id}/variantsAnswers")
     public ResponseEntity<List<VariantAnswer>> getUsersAnswers(@ApiParam("Get user's answers")
                                                                @PathVariable("user_id") Long id) {
-        List<VariantAnswer> userVariantsAnswer = userDao.getUserVariantsAnswer(id);
+
+        User user = userDao.findById(id);
+        List<VariantAnswer> userVariantsAnswer = new ArrayList<>(user.getVariantAnswers());
         return new ResponseEntity<>(userVariantsAnswer, HttpStatus.OK);
     }
 
@@ -141,7 +143,9 @@ public class UserController {
                                @PathVariable("user_id") Long userId,
                                @ApiIgnore @ModelAttribute VariantAnswer answer) {
         //TODO: possible problems with null-params mapping into model
-        userDao.setUserVariantAnswer(userId, answer.getAnswerId());
+        User user = userDao.findById(userId);
+        user.getVariantAnswers().add(answer);
+        userDao.update(user);
     }
 
     @DeleteMapping(value = "/{user_id}/variantsAnswers/{answer_id}")
@@ -149,7 +153,8 @@ public class UserController {
                                  @PathVariable("user_id") Long userId,
                                  @PathVariable("answer_id") Long answerId
     ) {
-        userDao.deleteVariantAnswer(userId, answerId);
+        User user = userDao.findById(userId);
+        user.getVariantAnswers().remove(variantAnswerDao.findById(answerId));
     }
 
 

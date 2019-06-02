@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
             User user = userDao.findByLogin(username);
-            List<Role> roles = userDao.getUserRoles(user.getUserId());
+            List<Role> roles = new ArrayList<>(user.getRoles());
             if (user.getUserId() == null) {
                 throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
             } else {
