@@ -11,5 +11,12 @@
 
     <artifactId>rest-hibernate-API</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.itacademy</groupId>
+            <artifactId>common-hibernate</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
