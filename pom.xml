@@ -8,7 +8,6 @@
     <artifactId>voting</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>testModule</module>
         <module>common-JDBC</module>
         <module>rest-jdbc-API</module>
         <module>common-hibernate</module>
