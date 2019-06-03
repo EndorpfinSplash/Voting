@@ -30,7 +30,10 @@ public class PollDaoImpl implements PollDao {
     @Override
     public Poll findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("SELECT p FROM Poll p where p.pollId = :id", Poll.class).uniqueResult();
+            return session
+                    .createQuery("SELECT p FROM Poll p where p.pollId = :idPoll", Poll.class)
+                    .setParameter("idPoll", id)
+                    .uniqueResult();
         }
     }
 
@@ -47,34 +50,24 @@ public class PollDaoImpl implements PollDao {
 
     @Override
     public Poll save(Poll entity) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.save(entity);
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            Long entityID = (Long) session.save(entity);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+            return session.find(Poll.class, entityID);
         }
-        return entity;
     }
 
     @Override
     public Poll update(Poll entity) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
             session.saveOrUpdate(entity);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+            return session.find(Poll.class, entity.getPollId());
         }
-        return entity;
     }
 
 }

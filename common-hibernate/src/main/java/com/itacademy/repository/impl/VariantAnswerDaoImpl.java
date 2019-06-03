@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class VariantAnswerDaoImpl implements VariantAnswerDao {
     @Override
     public VariantAnswer findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("SELECT v FROM VariantAnswer v where v.pollId = :id", VariantAnswer.class).uniqueResult();
+            return session.find(VariantAnswer.class, id);
         }
     }
 
@@ -45,41 +46,36 @@ public class VariantAnswerDaoImpl implements VariantAnswerDao {
 
     @Override
     public VariantAnswer save(VariantAnswer entity) {
-
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.save(entity);
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            Long entityID = (Long) session.save(entity);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+            return session.find(VariantAnswer.class, entityID);
         }
-        return entity;
     }
 
     @Override
     public VariantAnswer update(VariantAnswer entity) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
             session.saveOrUpdate(entity);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback(); }
-            e.printStackTrace();
+            return session.find(VariantAnswer.class, entity.getAnswerId());
         }
-        return entity;
     }
 
     @Override
     public List<VariantAnswer> findVariantAnswersForPull(Long poll_id) {
 
         try (Session session = sessionFactory.openSession()) {
-            Poll poll = session.createQuery("SELECT p FROM Poll p where p.pollId = :id", Poll.class).uniqueResult();
+
+            TypedQuery<Poll> query = session
+                    .createQuery("SELECT p FROM Poll p where p.pollId = :pollId", Poll.class);
+            Poll poll = query
+                    .setParameter("pollId", poll_id)
+                    .getSingleResult();
             return new ArrayList<>(poll.getVariantAnswers());
         }
     }

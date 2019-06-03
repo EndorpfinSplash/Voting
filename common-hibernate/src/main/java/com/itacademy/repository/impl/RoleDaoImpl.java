@@ -30,13 +30,15 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public Role findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("SELECT r FROM Role r where r.roleId = :id", Role.class).uniqueResult() ;
+            return session
+                    .createQuery("SELECT r FROM Role r where r.roleId = :id", Role.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
         }
     }
 
     @Override
     public void delete(Long id) {
-
         Role role = findById(id);
         try (Session session = sessionFactory.openSession()) {
             session.delete(role);
@@ -45,34 +47,23 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public Role save(Role entity) {
-
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.save(entity);
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            Long entityID = (Long) session.save(entity);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+            return session.find(Role.class, entityID);
         }
-        return entity;
     }
 
     @Override
     public Role update(Role entity) {
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
             session.saveOrUpdate(entity);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+            return session.find(Role.class, entity.getRoleId());
         }
-        return entity;
     }
 }

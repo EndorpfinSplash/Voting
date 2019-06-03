@@ -22,7 +22,7 @@ import java.util.List;
 public class HiberanteVariantAnswerController {
 
     @Autowired
-    @Qualifier("variantAnswerDaoHibernateImpl")
+    @Qualifier("variantAnswerDaoImpl")
     VariantAnswerDao variantAnswerDao;
 
     @ApiOperation(value = "Get all variants answers")

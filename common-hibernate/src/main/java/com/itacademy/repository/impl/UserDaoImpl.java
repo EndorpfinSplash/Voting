@@ -30,7 +30,10 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("select u from User u where u.userId =:id", User.class).uniqueResult();
+            return session
+                    .createQuery("select u from User u where u.userId =:id", User.class)
+                    .setParameter("id", id)
+                    .uniqueResult();
         }
     }
 
@@ -47,36 +50,36 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User save(User entity) {
 
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
-            session.save(entity);
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            Long entityID = (Long) session.save(entity);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+            return session.find(User.class, entityID);
         }
-        return entity;
     }
 
     @Override
     public User update(User entity) {
 
-        Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
-            transaction = session.beginTransaction();
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
             session.saveOrUpdate(entity);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
+            return session.find(User.class, entity.getUserId());
         }
-        return entity;
     }
 
 
+    @Override
+    public User findByLogin(String login) {
+
+        try (Session session = sessionFactory.openSession()) {
+            return session
+                    .createQuery("select u from User u where u.userName =:login", User.class)
+                    .setParameter("login", login)
+                    .uniqueResult();
+        }
+    }
 }

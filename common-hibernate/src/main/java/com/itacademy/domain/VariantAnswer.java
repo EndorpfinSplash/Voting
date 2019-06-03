@@ -10,9 +10,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "variant_answers")
+@Table(name = "voting.variant_answers")
 public class VariantAnswer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")
     Long answerId;
 
@@ -31,7 +32,7 @@ public class VariantAnswer {
     Poll poll;
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "variantAnswers", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "variantAnswers", fetch = FetchType.LAZY)
     Set<User> users = Collections.emptySet();
 
 

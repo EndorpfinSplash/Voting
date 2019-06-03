@@ -10,11 +10,11 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "poll")
+@Table(name = "voting.poll")
 public class Poll {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "poll_id")
     private Long pollId;
 
