@@ -33,7 +33,7 @@ public class VariantAnswer {
     Poll poll;
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "variantAnswers", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "voting.variantAnswers", fetch = FetchType.LAZY)
     Set<User> users = Collections.emptySet();
 
 
