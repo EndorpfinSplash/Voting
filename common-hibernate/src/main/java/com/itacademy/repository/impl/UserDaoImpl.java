@@ -3,9 +3,7 @@ package com.itacademy.repository.impl;
 import com.itacademy.domain.User;
 import com.itacademy.repository.UserDao;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
@@ -13,12 +11,8 @@ import java.util.List;
 
 @Repository
 @Qualifier("userDaoImpl")
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends AbstractRepository implements UserDao {
 
-
-    @Autowired
-    @Qualifier("sessionFactory")
-    private SessionFactory sessionFactory;
 
     @Override
     public List<User> findAll() {
@@ -42,9 +36,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void delete(Long id) {
         User user = findById(id);
-        try (Session session = sessionFactory.openSession()) {
-            session.delete(user);
-        }
+        doDeleteTransaction(user);
     }
 
     @Override

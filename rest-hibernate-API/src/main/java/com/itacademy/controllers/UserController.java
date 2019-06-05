@@ -18,7 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -61,7 +63,7 @@ public class UserController {
         User user = new User();
         user.setUserName(request.getUserName());
         user.setUserSurname(request.getUserSurname());
-        user.setRegistrationDate(request.getRegistrationDate());
+        user.setRegistrationDate( new Timestamp(new Date().getTime()));
         user.setLogin(request.getLogin());
         user.setPassword(request.getPassword());
 
@@ -76,7 +78,7 @@ public class UserController {
         User user = userDao.findById(userId);
         user.setUserName(request.getUserName());
         user.setUserSurname(request.getUserSurname());
-        user.setRegistrationDate(request.getRegistrationDate());
+        user.setRegistrationDate(new Timestamp(new Date().getTime()));
         user.setLogin(request.getLogin());
         user.setPassword(request.getPassword());
 
@@ -90,8 +92,6 @@ public class UserController {
         userDao.delete(userId);
         return new ResponseEntity<>(userId, HttpStatus.OK);
     }
-
-
 
 
 

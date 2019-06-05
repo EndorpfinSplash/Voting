@@ -50,10 +50,26 @@ public class HiberanteVariantAnswerController {
     }
 
 
+    @ApiOperation(value = "Save variant answer")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/{answer_id}", method = RequestMethod.POST)
+    public ResponseEntity<VariantAnswer> saveVariantAnswer(@RequestBody VariantAnswerCreateRequest request,
+                                                           @PathVariable("answer_id") Long answerId) {
+        VariantAnswer variantAnswer = variantAnswerDao.findById(answerId);
+
+        variantAnswer.setVariantAnswer(request.getVariantAnswer());
+        variantAnswer.setAnswerOrder(request.getAnswerOrder());
+        variantAnswer.setCorrectness(request.getCorrectness());
+
+        VariantAnswer savedVariantAnswer = variantAnswerDao.save(variantAnswer);
+        return new ResponseEntity<>(savedVariantAnswer, HttpStatus.CREATED);
+    }
+
     @ApiOperation(value = "Update variant answer")
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/{answer_id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{answer_id}", method = RequestMethod.PUT)
     public ResponseEntity<VariantAnswer> updateVariantAnswer(@RequestBody VariantAnswerCreateRequest request,
                                                              @PathVariable("answer_id") Long answerId) {
         VariantAnswer variantAnswer = variantAnswerDao.findById(answerId);
@@ -62,7 +78,7 @@ public class HiberanteVariantAnswerController {
         variantAnswer.setAnswerOrder(request.getAnswerOrder());
         variantAnswer.setCorrectness(request.getCorrectness());
 
-        VariantAnswer savedVariantAnswer = variantAnswerDao.save(variantAnswer);
+        VariantAnswer savedVariantAnswer = variantAnswerDao.update(variantAnswer);
         return new ResponseEntity<>(savedVariantAnswer, HttpStatus.CREATED);
     }
 

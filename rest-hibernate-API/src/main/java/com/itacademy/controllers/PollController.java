@@ -142,12 +142,13 @@ public class PollController {
                                                                     @PathVariable("poll_id") Long pollId,
                                                                     @PathVariable("answer_id") Long answerId
     ) {
+
         VariantAnswer variantAnswer = variantAnswerDao.findById(answerId);
         variantAnswer.setVariantAnswer(request.getVariantAnswer());
         variantAnswer.setAnswerOrder(request.getAnswerOrder());
         variantAnswer.setCorrectness(request.getCorrectness());
 
-        VariantAnswer savedVariantAnswer = variantAnswerDao.save(variantAnswer);
+        VariantAnswer savedVariantAnswer = variantAnswerDao.update(variantAnswer);
         return new ResponseEntity<>(savedVariantAnswer, HttpStatus.CREATED);
     }
 

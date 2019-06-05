@@ -2,24 +2,21 @@ package com.itacademy.requests;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.sql.Timestamp;
 import java.util.Objects;
 
 public class UserCreateRequest {
 
     private String userName;
     private String userSurname;
-    private Timestamp registrationDate;
     private String login;
     private String password;
 
     public UserCreateRequest() {
     }
 
-    public UserCreateRequest(String userName, String userSurname, Timestamp registrationDate, String login, String password) {
+    public UserCreateRequest(String userName, String userSurname,  String login, String password) {
         this.userName = userName;
         this.userSurname = userSurname;
-        this.registrationDate = registrationDate;
         this.login = login;
         this.password = password;
     }
@@ -42,13 +39,6 @@ public class UserCreateRequest {
         this.userSurname = userSurname;
     }
 
-    public Timestamp getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(Timestamp registrationDate) {
-        this.registrationDate = registrationDate;
-    }
 
     public String getLogin() {
         return login;
@@ -74,7 +64,6 @@ public class UserCreateRequest {
         UserCreateRequest that = (UserCreateRequest) o;
         return Objects.equals(userName, that.userName) &&
                 Objects.equals(userSurname, that.userSurname) &&
-                Objects.equals(registrationDate, that.registrationDate) &&
                 Objects.equals(login, that.login) &&
                 Objects.equals(password, that.password);
     }
@@ -82,7 +71,7 @@ public class UserCreateRequest {
     @Override
     public int hashCode() {
 
-        return Objects.hash(userName, userSurname, registrationDate, login, password);
+        return Objects.hash(userName, userSurname,  login, password);
     }
 
     @Override

@@ -3,9 +3,7 @@ package com.itacademy.repository.impl;
 import com.itacademy.domain.Role;
 import com.itacademy.repository.RoleDao;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
@@ -13,11 +11,7 @@ import java.util.List;
 
 @Repository
 @Qualifier("roleDaoImpl")
-public class RoleDaoImpl implements RoleDao {
-
-    @Autowired
-    @Qualifier("sessionFactory")
-    private SessionFactory sessionFactory;
+public class RoleDaoImpl extends AbstractRepository implements RoleDao {
 
 
     @Override
@@ -40,9 +34,7 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public void delete(Long id) {
         Role role = findById(id);
-        try (Session session = sessionFactory.openSession()) {
-            session.delete(role);
-        }
+        doDeleteTransaction(role);
     }
 
     @Override

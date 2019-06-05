@@ -3,9 +3,7 @@ package com.itacademy.repository.impl;
 import com.itacademy.domain.Poll;
 import com.itacademy.repository.PollDao;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
@@ -13,16 +11,12 @@ import java.util.List;
 
 @Repository
 @Qualifier("pollDaoImpl")
-public class PollDaoImpl implements PollDao {
-
-    @Autowired
-    @Qualifier("sessionFactory")
-    private SessionFactory sessionFactory;
+public class PollDaoImpl extends AbstractRepository implements PollDao {
 
 
     @Override
     public List<Poll> findAll() {
-        try (Session session = sessionFactory.openSession()) {
+        try (Session session = super.sessionFactory.openSession()) {
             return session.createQuery("SELECT p FROM Poll p", Poll.class).list();
         }
     }
@@ -41,11 +35,7 @@ public class PollDaoImpl implements PollDao {
     @Override
     public void delete(Long id) {
         Poll poll = findById(id);
-
-        try (Session session = sessionFactory.openSession()) {
-            session.delete(poll);
-        }
-
+        doDeleteTransaction(poll);
     }
 
     @Override

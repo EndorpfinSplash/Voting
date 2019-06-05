@@ -4,9 +4,7 @@ import com.itacademy.domain.Poll;
 import com.itacademy.domain.VariantAnswer;
 import com.itacademy.repository.VariantAnswerDao;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
@@ -16,11 +14,7 @@ import java.util.List;
 
 @Repository
 @Qualifier("variantAnswerDaoImpl")
-public class VariantAnswerDaoImpl implements VariantAnswerDao {
-
-    @Autowired
-    @Qualifier("sessionFactory")
-    private SessionFactory sessionFactory;
+public class VariantAnswerDaoImpl extends AbstractRepository implements VariantAnswerDao {
 
     @Override
     public List<VariantAnswer> findAll() {
@@ -39,9 +33,7 @@ public class VariantAnswerDaoImpl implements VariantAnswerDao {
     @Override
     public void delete(Long id) {
         VariantAnswer variantAnswer = findById(id);
-        try (Session session = sessionFactory.openSession()) {
-            session.delete(variantAnswer);
-        }
+         doDeleteTransaction(variantAnswer);
     }
 
     @Override

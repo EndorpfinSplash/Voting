@@ -1,5 +1,6 @@
 package com.itacademy.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -21,6 +22,7 @@ public class Poll {
     @Column(name = "poll_question")
     private String pollQuestion;
 
+    @JsonBackReference
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "poll")
     private Set<VariantAnswer> variantAnswers = Collections.EMPTY_SET;
 

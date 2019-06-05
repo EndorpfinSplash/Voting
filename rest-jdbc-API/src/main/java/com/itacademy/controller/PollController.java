@@ -147,7 +147,7 @@ public class PollController {
         variantAnswer.setCorrectness(request.getCorrectness());
         variantAnswer.setAnswerOrder(request.getAnswerOrder());
 
-        VariantAnswer savedVariantAnswer = variantAnswerDao.save(variantAnswer);
+        VariantAnswer savedVariantAnswer = variantAnswerDao.update(variantAnswer);
         return new ResponseEntity<>(savedVariantAnswer, HttpStatus.CREATED);
     }
 
